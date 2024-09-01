@@ -176,9 +176,9 @@ require('lazy').setup({
       end, { desc = '[S]earch [/] in Open Files' })
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      -- vim.keymap.set('n', '<leader>sn', function()
+      --   builtin.find_files { cwd = vim.fn.stdpath 'config' }
+      -- end, { desc = '[S]earch [N]eovim files' })
     end,
   },
   -- LSP Plugins
@@ -693,15 +693,6 @@ require('lazy').setup({
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
-  },
-
-  {
-    'phaazon/mind.nvim',
-    branch = 'v2.2',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('mind').setup()
     end,
   },
 
