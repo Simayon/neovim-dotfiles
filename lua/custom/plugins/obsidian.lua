@@ -174,14 +174,14 @@ return {
       return out
     end,
 
-    -- Optional, for templates (see below).
-    templates = {
-      folder = 'templates',
-      date_format = '%Y-%m-%d',
-      time_format = '%H:%M',
-      -- A map for custom variables, the key should be the variable and the value a function
-      substitutions = {},
-    },
+    -- -- Optional, for templates (see below).
+    -- templates = {
+    --   folder = 'templates',
+    --   date_format = '%Y-%m-%d',
+    --   time_format = '%H:%M',
+    --   -- A map for custom variables, the key should be the variable and the value a function
+    --   substitutions = {},
+    -- },
 
     -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
     -- URL it will be ignored but you can customize this behavior here.
@@ -291,6 +291,7 @@ return {
     -- Optional, configure additional syntax highlighting / extmarks.
     -- This requires you have `conceallevel` set to 1 or 2. See `:help conceallevel` for more details.
     ui = {
+      conceallevel = 1,
       enable = true, -- set to false to disable all additional syntax features
       update_debounce = 200, -- update delay after a text change (in milliseconds)
       max_file_length = 5000, -- disable UI features for files with more than this many lines
