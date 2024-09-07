@@ -376,6 +376,17 @@ require('lazy').setup({
           -- filetypes = { ...},
           -- capabilities = {},
           settings = {
+            html = {
+              format = {
+                templating = true,
+                wrapLineLength = 120,
+                wrapAttributes = 'auto',
+              },
+              hover = {
+                documentation = true,
+                references = true,
+              },
+            },
             Lua = {
               completion = {
                 callSnippet = 'Replace',
