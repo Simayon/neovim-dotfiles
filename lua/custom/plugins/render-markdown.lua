@@ -7,6 +7,7 @@ return {
     heading = {
       enabled = true,
       sign = true,
+      style = 'full',
       position = 'overlay',
       icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
       signs = { '󰫎 ' },
@@ -38,27 +39,17 @@ return {
     code = {
       enabled = true,
       sign = true,
-      position = 'right',
+      position = 'left',
       language_pad = 2,
       disable_background = { 'diff' },
       width = 'block',
-      -- Amount of padding to add to the left of code blocks
       left_pad = 3,
-      -- Amount of padding to add to the right of code blocks when width is 'block'
-      right_pad = 0,
-      -- Minimum width to use for code blocks when width is 'block'
+      right_pad = 3,
       min_width = 0,
-      -- Determins how the top / bottom of code block are rendered:
-      --  thick: use the same highlight as the code body
-      --  thin:  when lines are empty overlay the above & below icons
       border = 'thin',
-      -- Used above code blocks for thin border
       above = '▄',
-      -- Used below code blocks for thin border
       below = '▀',
-      -- Highlight for code blocks
       highlight = 'RenderMarkdownCode',
-      -- Highlight for inline code
       highlight_inline = 'RenderMarkdownCodeInline',
     },
     bullet = {
