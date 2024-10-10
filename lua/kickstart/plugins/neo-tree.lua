@@ -15,6 +15,11 @@ return {
   },
   opts = {
     filesystem = {
+      filtered_items = {
+        visible = false, -- Show hidden files but dim them
+        hide_dotfiles = true, -- Set to true if you want to hide dotfiles
+        hide_gitignored = true, -- This is crucial: it hides files listed in .gitignore
+      },
       window = {
         position = 'left',
         width = 40,
