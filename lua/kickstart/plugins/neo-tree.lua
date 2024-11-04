@@ -1,6 +1,33 @@
 -- Neo-tree is a Neovim plugin to browse the file system
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 
+local git_status_footer = function(state)
+  local git_status = state.git_status_lookup
+  if not git_status then
+    return {}
+  end
+
+  local added, modified, deleted, untracked = 0, 0, 0, 0
+  for _, status in pairs(git_status) do
+    if status == 'A' then
+      added = added + 1
+    elseif status == 'M' then
+      modified = modified + 1
+    elseif status == 'D' then
+      deleted = deleted + 1
+    elseif status == '?' then
+      untracked = untracked + 1
+    end
+  end
+
+  return {
+    {
+      text = string.format('  %d  %d  %d  %d', added, modified, deleted, untracked),
+      highlight = 'NeoTreeGitStatusFooter',
+    },
+  }
+end
+
 return {
   'nvim-neo-tree/neo-tree.nvim',
   version = '*',
@@ -15,10 +42,30 @@ return {
   },
   opts = {
     filesystem = {
+      bind_to_cwd = true,
       filtered_items = {
         visible = false, -- Show hidden files but dim them
         hide_dotfiles = true, -- Set to true if you want to hide dotfiles
         hide_gitignored = true, -- This is crucial: it hides files listed in .gitignore
+      },
+      nesting_rules = {
+        ['package.json'] = {
+          pattern = '^package%.json$', -- <-- Lua pattern
+          files = { 'package-lock.json', 'yarn*' }, -- <-- glob pattern
+        },
+        ['go'] = {
+          pattern = '(.*)%.go$',
+          files = { '%1_test.go' },
+        },
+        ['js-extended'] = {
+          pattern = '(.+)%.js$',
+          files = { '%1.js.map', '%1.min.js', '%1.d.ts' },
+        },
+        ['docker'] = {
+          pattern = '^dockerfile$',
+          ignore_case = true,
+          files = { '.dockerignore', 'docker-compose.*', 'dockerfile*' },
+        },
       },
       window = {
         position = 'left',
@@ -66,11 +113,6 @@ return {
         },
       },
     },
-    commands = {
-      start_git = function()
-        vim.cmd ':Neotree git_status'
-      end,
-    },
     git_status = {
       window = {
         position = 'float',
@@ -114,5 +156,46 @@ return {
       enabled = true,
       required_width = 110, -- min width of window required to show this column
     },
+    event_handlers = {
+      {
+        event = 'file_open_requested',
+        handler = function(args)
+          -- implement a logic on event occurrence
+        end,
+      },
+    },
+    default_component_configs = {
+      container = {
+        enable_character_fade = true,
+        width = '100%',
+        right_padding = 1,
+      },
+      name = {
+        use_git_status_colors = true,
+        zindex = 10,
+      },
+      diagnostics = {
+        zindex = 20,
+        align = 'right',
+      },
+      git_status = {
+        zindex = 20,
+        align = 'right',
+      },
+    },
   },
+  init = function()
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'NeotreeInit',
+      callback = function(args)
+        local state = require('neo-tree.sources.manager').get_state 'filesystem'
+        state.components.footer = git_status_footer
+      end,
+    })
+  end,
+  config = function(_, opts)
+    require('neo-tree').setup(opts)
+    -- Add highlight group for the footer
+    vim.api.nvim_set_hl(0, 'NeoTreeGitStatusFooter', { fg = '#89b4fa', bold = true })
+  end,
 }
