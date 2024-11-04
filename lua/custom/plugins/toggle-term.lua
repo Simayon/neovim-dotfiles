@@ -35,7 +35,7 @@ return {
       open_mapping = [[<c-\>]],
       hide_number = true,
       start_in_insert = true,
-      direction = 'horizontal', -- horizontal | vertical | float | tab
+      direction = 'float', -- horizontal | vertical | float | tab
       shell = 'zsh', -- or "bash", "fish", "pwsh", etc.
     }
   end,
