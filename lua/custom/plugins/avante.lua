@@ -4,15 +4,64 @@ return {
   lazy = false,
   version = false, -- set this if you want to always pull the latest change
   opts = {
-    provider = 'gemini',
+    provider = 'gemini', -- Use the custom provider
+    vendors = {
+      -- Define custom providers here
+      ['my-custom-provider'] = {
+        endpoint = 'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-Coder-32B-Instruct/v1/chat/completions',
+        model = 'Qwen/Qwen2.5-Coder-32B-Instruct',
+        api_key_name = 'QWEN_API_KEY',
+        parse_curl_args = function(opts, code_opts)
+          -- Custom logic to parse cURL arguments
+          local payload = {
+            model = opts.model,
+            messages = {
+              { role = 'user', content = code_opts.content or '' },
+            },
+            max_tokens = 500,
+            stream = true,
+          }
+          local json_payload = vim.json.encode(payload)
+          print(json_payload) -- Debug print to check the JSON payload
+          return {
+            url = opts.endpoint,
+            method = 'POST',
+            headers = {
+              ['Content-Type'] = 'application/json',
+              ['Authorization'] = 'Bearer ' .. vim.env[opts.api_key_name],
+            },
+            data = json_payload,
+          }
+        end,
+        parse_response = function(data_stream, event_state, opts)
+          -- Custom logic to parse incoming SSE stream
+          local chunks = vim.split(data_stream, '\n', { plain = true })
+          for _, chunk in ipairs(chunks) do
+            if chunk:match '^data: ' then
+              chunk = chunk:sub(7) -- Remove "data: " prefix
+              local json_chunk = vim.json.decode(chunk)
+              if json_chunk.choices and json_chunk.choices[1] and json_chunk.choices[1].delta and json_chunk.choices[1].delta.content then
+                opts.on_chunk(json_chunk.choices[1].delta.content)
+              end
+              if json_chunk.error then
+                opts.on_complete(json_chunk.error.message)
+              elseif json_chunk.choices and json_chunk.choices[1] and json_chunk.choices[1].finish_reason then
+                opts.on_complete(nil)
+              end
+            end
+          end
+        end,
+        parse_stream_data = function(data, handler_opts)
+          -- Custom logic to parse incoming stream data (if not using SSE)
+          -- This is mutually exclusive with parse_response
+        end,
+      },
+    },
     gemini = {
-      -- api_key_name = {"bw","get","notes","anthropic-api-key"}, -- if it is a table of string, then default to command.
       api_key_name = 'GEMINI_API_KEY',
     },
   },
-  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'stevearc/dressing.nvim',
@@ -26,7 +75,6 @@ return {
       'HakonHarnes/img-clip.nvim',
       event = 'VeryLazy',
       opts = {
-        ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
         provider = 'gemini', -- Set gemini as the default provider
         auto_suggestions_provider = 'gemini', -- Set gemini as the default auto-suggestions provider
         gemini = {
@@ -45,7 +93,6 @@ return {
           support_paste_from_clipboard = false,
         },
         mappings = {
-          --- @class AvanteConflictMappings
           diff = {
             ours = 'co',
             theirs = 'ct',
@@ -78,7 +125,6 @@ return {
         },
         hints = { enabled = true },
         windows = {
-          ---@type "right" | "left" | "top" | "bottom"
           position = 'right', -- the position of the sidebar
           wrap = true, -- similar to vim.o.wrap
           width = 30, -- default % based on available width
@@ -99,25 +145,18 @@ return {
             floating = false, -- open the 'AvanteAsk' prompt in a floating window
             start_insert = true, -- start insert mode when opening the ask window
             border = 'rounded',
-            ---@type "ours" | "theirs"
             focus_on_apply = 'ours', -- which diff to focus after applying
           },
         },
         highlights = {
-          ---@type AvanteConflictHighlights
           diff = {
             current = 'DiffText',
             incoming = 'DiffAdd',
           },
         },
-        --- @class AvanteConflictUserConfig
         diff = {
           autojump = true,
-          ---@type string | fun(): any
           list_opener = 'copen',
-          --- Override the 'timeoutlen' setting while hovering over a diff (see :help timeoutlen).
-          --- Helps to avoid entering operator-pending mode with diff mappings starting with `c`.
-          --- Disable by setting to -1.
           override_timeoutlen = 500,
         },
       },

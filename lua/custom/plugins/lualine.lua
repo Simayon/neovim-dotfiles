@@ -71,7 +71,14 @@ return {
             padding = { left = 1, right = 1 },
           },
         },
-        lualine_x = {},
+        lualine_x = {
+          {
+            function()
+              return vim.fn.wordcount().words .. ' words'
+            end,
+            cond = is_markdown,
+          },
+        },
         lualine_y = {},
         lualine_z = { {
           "os.date('%x')",
@@ -82,18 +89,7 @@ return {
         lualine_a = nil,
         lualine_b = nil,
         lualine_c = {
-          {
-            function()
-              return '%='
-            end,
-          },
-          {
-            'filename',
-            file_status = true, -- displays file status (readonly status, modified status)
-            newfile_status = true,
-            path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
-            padding = { left = 1, right = 1 },
-          },
+          'Nothing',
         },
         lualine_x = nil,
         lualine_y = {},
