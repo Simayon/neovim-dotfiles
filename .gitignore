@@ -1,0 +1,23 @@
+tags
+test.sh
+nvim
+
+spell/
+lazy-lock.json
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Lua language server files
+.luarc.json
+
+# Project specific files to keep locally
+.stylua.toml
+TO-DO.md
+To-Decide.md
+doc/deoxygen_header.md
+doc/kickstart.txt
+doc/test.jpg
