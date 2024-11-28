@@ -1,12 +1,15 @@
--- Common configuration settings used across multiple plugins
+---@class CommonConfig
+---@field ui table UI related settings
+---@field plugin_defaults table Common plugin settings
 local M = {}
 
--- UI related settings
+---@class UIConfig
+---@field border string Common border style for floating windows
+---@field highlights table Common highlight groups
+---@field icons table Icons used across different plugins
 M.ui = {
-  -- Common border style for floating windows
   border = 'rounded',
   
-  -- Common highlight groups
   highlights = {
     search = 'Search',
     error = 'DiagnosticError',
@@ -15,7 +18,6 @@ M.ui = {
     hint = 'DiagnosticHint',
   },
   
-  -- Icons used across different plugins
   icons = {
     diagnostics = {
       Error = ' ',
@@ -59,13 +61,14 @@ M.ui = {
   },
 }
 
--- Common plugin settings
+---@class PluginDefaults
+---@field format_timeout number Default timeout for formatting operations
+---@field completion_timeout number Default timeout for completion operations
+---@field ignore_patterns string[] Default file patterns to ignore
 M.plugin_defaults = {
-  -- Default timeouts
   format_timeout = 3000,
   completion_timeout = 500,
   
-  -- Default file patterns to ignore
   ignore_patterns = {
     '%.git/',
     'node_modules/',
@@ -73,5 +76,31 @@ M.plugin_defaults = {
     'vendor/',
   },
 }
+
+---Get UI configuration with error handling
+---@return table
+function M.get_ui_config()
+  local ok, config = pcall(function()
+    return vim.deepcopy(M.ui)
+  end)
+  if not ok then
+    vim.notify('Error loading UI config, using defaults', vim.log.levels.WARN)
+    return { border = 'rounded' }
+  end
+  return config
+end
+
+---Get plugin defaults with error handling
+---@return table
+function M.get_plugin_defaults()
+  local ok, config = pcall(function()
+    return vim.deepcopy(M.plugin_defaults)
+  end)
+  if not ok then
+    vim.notify('Error loading plugin defaults, using basic defaults', vim.log.levels.WARN)
+    return { format_timeout = 3000, completion_timeout = 500 }
+  end
+  return config
+end
 
 return M

@@ -732,6 +732,34 @@ require('lazy').setup({
     end,
   },
 
+  -- [[ Additional Utilities ]]
+  { -- Key binding analyzer
+    'meznaric/key-analyzer.nvim',
+    keys = {
+      { '<leader>ka', '<cmd>KeyAnalyzer<cr>', desc = '[K]ey [A]nalyzer' },
+    },
+    opts = {
+      -- Automatically calculate optimal key suggestions
+      auto_calculate = true,
+    },
+  },
+
+  { -- Markdown equation previewer
+    'Thiago4532/mdmath.nvim',
+    ft = { 'markdown' },  -- Only load for markdown files
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require('mdmath').setup({
+        -- Enable inline math
+        inline_math = true,
+        -- Enable displayed math (multiline equations)
+        display_math = true,
+      })
+    end,
+  },
+
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
   --
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
