@@ -8,10 +8,10 @@ return {
     local Snacks = require('snacks')
     
     -- Git related keybindings
-    vim.keymap.set('n', '<leader>gB', function() Snacks.gitbrowse() end, { desc = 'Git Browse' })
-    vim.keymap.set('n', '<leader>gb', function() Snacks.git.blame_line() end, { desc = 'Git Blame Line' })
-    vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = 'Lazygit Current File History' })
-    vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'Lazygit' })
-    vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'Lazygit Log (cwd)' })
+    vim.keymap.set('n', '<leader>gB', function() Snacks.gitbrowse() end, { desc = '[G]it [B]rowse' })
+    vim.keymap.set('n', '<leader>gb', function() Snacks.git.blame_line() end, { desc = '[G]it [B]lame Line' })
+    vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = '[G]it [F]ile History' })
+    vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = '[G]it Open Lazy[G]it' })
+    vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = '[G]it [L]og' })
   end,
 }

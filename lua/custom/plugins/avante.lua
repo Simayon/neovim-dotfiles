@@ -3,6 +3,12 @@ return {
   event = 'VeryLazy',
   lazy = false,
   version = false, -- set this if you want to always pull the latest change
+  keys = {
+    { '<leader>aa', '<cmd>Avante<CR>', desc = '[A]vante [A]I' },
+    { '<leader>ae', '<cmd>AvanteEdit<CR>', desc = '[A]vante [E]dit' },
+    { '<leader>ar', '<cmd>AvanteRewrite<CR>', desc = '[A]vante [R]ewrite' },
+    { '<leader>ac', '<cmd>AvanteComplete<CR>', desc = '[A]vante [C]omplete' },
+  },
   opts = {
     provider = 'gemini', -- Use the custom provider
     vendors = {

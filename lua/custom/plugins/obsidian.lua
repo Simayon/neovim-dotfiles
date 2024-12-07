@@ -390,6 +390,6 @@ return {
     end, {})
 
     -- Set up the keybinding
-    vim.api.nvim_set_keymap('n', '<leader>so', ':ObsidianSwitchWorkspace<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', '<leader>so', ':ObsidianSwitchWorkspace<CR>', { desc = '[S]earch [O]bsidian Workspace', noremap = true, silent = true })
   end,
 }
