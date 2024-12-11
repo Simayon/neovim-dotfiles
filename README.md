@@ -10,7 +10,7 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 ### 🌟 Features & Highlights
 
 - **🌈 Colorscheme & Themes** – Tailored color schemes to keep your workspace inspiring and easy on the eyes.
-- **🔑 Custom Keymaps** – Speed up your workflow with intuitive, customized keybindings.
+- **🔑 Custom Keymaps** – Speed up your workflow with intuitive, customized keybindings. See [keybindings reference](./keybindings_reference.md) for details.
 - **📂 File Navigation** – Effortlessly explore and manage files with tree views and Neo-tree.
 - **📊 Productivity Plugins** – Boost efficiency with tools like `WakaTime`, `Lualine`, and `Dashboard`.
 
