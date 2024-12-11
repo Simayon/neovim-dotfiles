@@ -14,13 +14,12 @@ return {
           siblings = true,
         },
         ---@type snacks.animate.Config|{enabled?: boolean}
-        animate = {
-          enabled = vim.fn.has 'nvim-0.10' == 1,
-          easing = 'outQuad',
-          duration = {
-            step = 20, -- ms per step
-            total = 300, -- maximum duration
-          },
+        ---    animate = {
+        enabled = vim.fn.has 'nvim-0.10' == 1,
+        easing = 'inOutQuad', -- Try different easing functions
+        duration = {
+          step = 10, -- Reduced from 20, makes animation quicker
+          total = 150, -- Reduced from 300, makes animation more snappy
         },
         filter = function(buf)
           return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ''
@@ -53,5 +52,15 @@ return {
     vim.keymap.set('n', '<leader>gl', function()
       Snacks.lazygit.log()
     end, { desc = '[G]it [L]og' })
+
+    -- which-key integration
+    local wk = require('which-key')
+    wk.register({
+      d = {
+        name = "Dimming",
+        e = {"<cmd>lua Snacks.dim.enable()<CR>", "Enable Dim"},
+        d = {"<cmd>lua Snacks.dim.disable()<CR>", "Disable Dim"},
+      },
+    }, { prefix = "<leader>" })
   end,
 }
