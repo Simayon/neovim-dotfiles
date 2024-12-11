@@ -14,39 +14,6 @@ require 'custom.configs.keymaps'
 -- [[ Basic Autocommands ]]
 require('custom.configs.autocommands').setup()
 
--- Create an autocommand group for adding header guards
-vim.api.nvim_create_augroup('AddHeaderGuards', { clear = true })
-vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-  pattern = '*.h',
-  group = 'AddHeaderGuards',
-  callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local filename = vim.api.nvim_buf_get_name(bufnr)
-    local guard_macro = string.upper(vim.fn.fnamemodify(filename, ':t:r') .. '_H')
-
-    -- Check if the file already has the guards
-    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local has_guards = false
-    for _, line in ipairs(lines) do
-      if line:match('#ifndef ' .. guard_macro) or line:match('#define ' .. guard_macro) or line:match '#endif' then
-        has_guards = true
-        break
-      end
-    end
-
-    if not has_guards then
-      -- Insert the guards at the beginning and end of the file
-      vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, {
-        '#ifndef ' .. guard_macro,
-        '#define ' .. guard_macro,
-        '',
-      })
-      table.insert(lines, '#endif')
-      vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, lines)
-    end
-  end,
-})
-
 vim.api.nvim_create_augroup('neotree_autoopen', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter', {
   desc = 'Open neo-tree on the right when opening a file',
@@ -157,7 +124,7 @@ require('lazy').setup({
   },
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    event = { 'VimEnter', 'BufReadPre' },  -- More specific lazy loading
+    event = { 'VimEnter', 'BufReadPre' }, -- More specific lazy loading
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -482,7 +449,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    event = { 'InsertEnter', 'CmdlineEnter' },  -- Load for command line completion too
+    event = { 'InsertEnter', 'CmdlineEnter' }, -- Load for command line completion too
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
@@ -647,7 +614,7 @@ require('lazy').setup({
   -- [[ Collection of various small independent plugins/modules ]]
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
-    event = 'VeryLazy',  -- Load after other important plugins
+    event = 'VeryLazy', -- Load after other important plugins
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -759,17 +726,17 @@ require('lazy').setup({
 
   { -- Markdown equation previewer
     'Thiago4532/mdmath.nvim',
-    ft = { 'markdown' },  -- Only load for markdown files
+    ft = { 'markdown' }, -- Only load for markdown files
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
     },
     config = function()
-      require('mdmath').setup({
+      require('mdmath').setup {
         -- Enable inline math
         inline_math = true,
         -- Enable displayed math (multiline equations)
         display_math = true,
-      })
+      }
     end,
   },
 
