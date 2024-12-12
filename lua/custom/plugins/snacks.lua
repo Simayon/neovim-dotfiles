@@ -5,21 +5,17 @@ return {
   },
   opts = {
     dim = {
-      ---@class snacks.dim.Config
-      {
-        ---@type snacks.scope.Config
-        scope = {
-          min_size = 5,
-          max_size = 20,
-          siblings = true,
-        },
-        ---@type snacks.animate.Config|{enabled?: boolean}
-        ---    animate = {
+      scope = {
+        min_size = 5,
+        max_size = 20,
+        siblings = true,
+      },
+      animate = {
         enabled = vim.fn.has 'nvim-0.10' == 1,
-        easing = 'inOutQuad', -- Try different easing functions
+        easing = 'inOutQuad',
         duration = {
-          step = 10, -- Reduced from 20, makes animation quicker
-          total = 150, -- Reduced from 300, makes animation more snappy
+          step = 10,
+          total = 150,
         },
         filter = function(buf)
           return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ''
@@ -27,14 +23,11 @@ return {
       },
     },
   },
-  -- Keybindings
-  keys = {
-    { '<leader>de', '<cmd>lua Snacks.dim.enable()<CR>', desc = 'Enable Dim' },
-    { '<leader>dd', '<cmd>lua Snacks.dim.disable()<CR>', desc = 'Disable Dim' },
-  },
-
-  config = function()
+  config = function(_, opts)
     local Snacks = require 'snacks'
+
+    -- Setup with opts
+    Snacks.setup(opts)
 
     -- Git related keybindings
     vim.keymap.set('n', '<leader>gB', function()
@@ -53,14 +46,32 @@ return {
       Snacks.lazygit.log()
     end, { desc = '[G]it [L]og' })
 
+    -- Dim keybindings
+    vim.keymap.set('n', '<leader>de', function()
+      Snacks.dim.enable()
+    end, { desc = 'Enable Dim' })
+    vim.keymap.set('n', '<leader>dd', function()
+      Snacks.dim.disable()
+    end, { desc = 'Disable Dim' })
+
     -- which-key integration
-    local wk = require('which-key')
+    local wk = require 'which-key'
     wk.register({
       d = {
-        name = "Dimming",
-        e = {"<cmd>lua Snacks.dim.enable()<CR>", "Enable Dim"},
-        d = {"<cmd>lua Snacks.dim.disable()<CR>", "Disable Dim"},
+        name = 'Dimming',
+        e = {
+          function()
+            Snacks.dim.enable()
+          end,
+          'Enable Dim',
+        },
+        d = {
+          function()
+            Snacks.dim.disable()
+          end,
+          'Disable Dim',
+        },
       },
-    }, { prefix = "<leader>" })
+    }, { prefix = '<leader>' })
   end,
 }
