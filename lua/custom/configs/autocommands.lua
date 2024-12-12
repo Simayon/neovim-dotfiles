@@ -16,6 +16,18 @@ local function with_error_handling(callback)
   end
 end
 
+M.setup_markdown_hints = function()
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'markdown',
+    callback = function()
+      -- Disable inlay hints for markdown files
+      if vim.lsp.inlay_hint then
+        vim.lsp.inlay_hint.enable(0, false)
+      end
+    end,
+  })
+end
+
 ---Create an autocommand group for adding header guards
 ---@return nil
 M.setup_header_guards = function()
@@ -66,9 +78,9 @@ M.setup_neotree = function()
       vim.defer_fn(function()
         -- Add your Neotree autoopen logic here
         if vim.bo.filetype ~= 'neo-tree' then
-          vim.cmd('Neotree show')
+          vim.cmd 'Neotree show'
         end
-      end, 100)  -- 100ms delay
+      end, 100) -- 100ms delay
     end),
   })
 end
@@ -78,9 +90,9 @@ end
 M.setup = function()
   -- Profile startup time if requested
   if vim.env.NVIM_PROFILE then
-    vim.cmd('profile start profile.log')
-    vim.cmd('profile file *')
-    vim.cmd('profile func *')
+    vim.cmd 'profile start profile.log'
+    vim.cmd 'profile file *'
+    vim.cmd 'profile func *'
   end
 
   M.setup_header_guards()
@@ -89,8 +101,8 @@ M.setup = function()
   -- Stop profiling if it was started
   if vim.env.NVIM_PROFILE then
     vim.defer_fn(function()
-      vim.cmd('profile stop')
-    end, 3000)  -- Stop profiling after 3 seconds
+      vim.cmd 'profile stop'
+    end, 3000) -- Stop profiling after 3 seconds
   end
 end
 
