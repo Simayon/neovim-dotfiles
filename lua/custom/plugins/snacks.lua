@@ -56,22 +56,24 @@ return {
 
     -- which-key integration
     local wk = require 'which-key'
-    wk.register({
-      d = {
-        name = 'Dimming',
-        e = {
-          function()
-            Snacks.dim.enable()
-          end,
-          'Enable Dim',
-        },
-        d = {
-          function()
-            Snacks.dim.disable()
-          end,
-          'Disable Dim',
-        },
+    wk.add {
+      { '<leader>d', group = 'Dimming' },
+      {
+        '<leader>dd',
+        function()
+          Snacks.dim.disable()
+        end,
+        desc = 'Disable Dim',
+        mode = 'n',
       },
-    }, { prefix = '<leader>' })
+      {
+        '<leader>de',
+        function()
+          Snacks.dim.enable()
+        end,
+        desc = 'Enable Dim',
+        mode = 'n',
+      },
+    }
   end,
 }
