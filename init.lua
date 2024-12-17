@@ -641,7 +641,7 @@ require('lazy').setup({
         },
         n_lines = 20,
         respect_selection_type = false,
-        search_method = 'cover',
+        search_method = 'cover_or_next',
         silent = false,
       }
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
