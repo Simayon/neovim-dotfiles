@@ -57,7 +57,7 @@ return {
     -- which-key integration
     local wk = require 'which-key'
     wk.add {
-      { '<leader>d', group = 'Dimming' },
+      { '<leader>d', group = '[D]imming' },
       {
         '<leader>dd',
         function()
