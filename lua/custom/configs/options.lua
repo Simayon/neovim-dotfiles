@@ -51,7 +51,22 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = {
+  tab = '  ',       -- Two spaces for tab
+  trail = '·',      -- Trailing whitespace
+  nbsp = '·',       -- Non-breaking space
+  extends = '>',    -- Line continues beyond right
+  precedes = '<',   -- Line continues beyond left
+  multispace = ' ', -- Multiple spaces
+  lead = ' ',       -- Leading spaces
+}
+
+-- Set tab display options
+vim.opt.tabstop = 2        -- Number of spaces a tab counts for
+vim.opt.shiftwidth = 2     -- Size of an indent
+vim.opt.softtabstop = 2    -- Number of spaces a tab counts for while editing
+vim.opt.expandtab = true   -- Use spaces instead of tabs
+vim.opt.smartindent = true -- Insert indents automatically
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'

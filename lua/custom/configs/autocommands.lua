@@ -1,5 +1,4 @@
 ---@class AutoCommands
----@field setup_header_guards function
 ---@field setup_neotree function
 ---@field setup function
 local M = {}
@@ -8,102 +7,110 @@ local M = {}
 ---@param callback function
 ---@return function
 local function with_error_handling(callback)
-  return function(...)
-    local ok, err = pcall(callback, ...)
-    if not ok then
-      vim.notify('Error in autocommand: ' .. tostring(err), vim.log.levels.ERROR)
-    end
-  end
+	return function(...)
+		local ok, err = pcall(callback, ...)
+		if not ok then
+			vim.notify("Error in autocommand: " .. tostring(err), vim.log.levels.ERROR)
+		end
+	end
 end
 
+-- Disable inlay hints for markdown files
 M.setup_markdown_hints = function()
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'markdown',
-    callback = function()
-      -- Disable inlay hints for markdown files
-      if vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(0, false)
-      end
-    end,
-  })
-end
-
----Create an autocommand group for adding header guards
----@return nil
-M.setup_header_guards = function()
-  local group = vim.api.nvim_create_augroup('AddHeaderGuards', { clear = true })
-  vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-    pattern = '*.h',
-    group = group,
-    callback = with_error_handling(function()
-      -- Schedule heavy file operations
-      vim.schedule(function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local filename = vim.api.nvim_buf_get_name(bufnr)
-        local guard_macro = string.upper(vim.fn.fnamemodify(filename, ':t:r') .. '_H')
-
-        -- Check if the file already has the guards
-        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-        local has_guards = false
-        for _, line in ipairs(lines) do
-          if line:match('#ifndef ' .. guard_macro) or line:match('#define ' .. guard_macro) or line:match '#endif' then
-            has_guards = true
-            break
-          end
-        end
-
-        if not has_guards then
-          -- Insert the guards at the beginning and end of the file
-          vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, {
-            '#ifndef ' .. guard_macro,
-            '#define ' .. guard_macro,
-            '',
-          })
-          table.insert(lines, '#endif')
-          vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, lines)
-        end
-      end)
-    end),
-  })
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "markdown",
+		callback = function()
+			if vim.lsp.inlay_hint then
+				vim.lsp.inlay_hint.enable(0, false)
+			end
+		end,
+	})
 end
 
 ---Setup Neotree autoopen with deferred initialization
 ---@return nil
 M.setup_neotree = function()
-  local group = vim.api.nvim_create_augroup('neotree_autoopen', { clear = true })
-  vim.api.nvim_create_autocmd('BufEnter', {
-    group = group,
-    callback = with_error_handling(function()
-      -- Defer non-critical UI updates
-      vim.defer_fn(function()
-        -- Add your Neotree autoopen logic here
-        if vim.bo.filetype ~= 'neo-tree' then
-          vim.cmd 'Neotree show'
-        end
-      end, 100) -- 100ms delay
-    end),
-  })
+	local group = vim.api.nvim_create_augroup("neotree_autoopen", { clear = true })
+
+	-- Function to check if Neotree should be opened
+	local function should_open_neotree()
+		local buftype = vim.bo.buftype
+		local filetype = vim.bo.filetype
+		local bufname = vim.fn.expand("%")
+
+		-- Skip Neotree for specific conditions
+		if filetype == "dashboard" or filetype == "neo-tree" or bufname == "" then
+			return false
+		end
+
+		-- Only open for normal buffers
+		return buftype == "" and not vim.g.neotree_opened
+	end
+
+	-- Function to safely open Neotree
+	local function safe_open_neotree()
+		if should_open_neotree() then
+			vim.schedule(function()
+				pcall(vim.cmd, "Neotree show left")
+				vim.g.neotree_opened = true
+			end)
+		end
+	end
+
+	-- Handle initial Vim startup
+	vim.api.nvim_create_autocmd("VimEnter", {
+		group = group,
+		callback = with_error_handling(function()
+			vim.defer_fn(safe_open_neotree, 100)
+		end),
+	})
+
+	-- Handle opening files after startup
+	vim.api.nvim_create_autocmd("BufWinEnter", {
+		group = group,
+		callback = with_error_handling(function()
+			if vim.g.neotree_opened then
+				return
+			end
+			safe_open_neotree()
+		end),
+	})
 end
 
----Initialize all autocommands with startup time profiling
+-- Remove trailing whitespace on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	command = "%s/\\s\\+$//e",
+})
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.hl.on_yank()
+	end,
+})
+
+---Initialize all autocommands
 ---@return nil
 M.setup = function()
-  -- Profile startup time if requested
-  if vim.env.NVIM_PROFILE then
-    vim.cmd 'profile start profile.log'
-    vim.cmd 'profile file *'
-    vim.cmd 'profile func *'
-  end
+	-- Profile startup time if requested
+	if vim.env.NVIM_PROFILE then
+		vim.cmd("profile start profile.log")
+		vim.cmd("profile file *")
+		vim.cmd("profile func *")
+	end
 
-  M.setup_header_guards()
-  M.setup_neotree()
+	M.setup_neotree()
+	M.setup_markdown_hints()
 
-  -- Stop profiling if it was started
-  if vim.env.NVIM_PROFILE then
-    vim.defer_fn(function()
-      vim.cmd 'profile stop'
-    end, 3000) -- Stop profiling after 3 seconds
-  end
+	-- Stop profiling if it was started
+	if vim.env.NVIM_PROFILE then
+		vim.defer_fn(function()
+			vim.cmd("profile stop")
+		end, 3000) -- Stop profiling after 3 seconds
+	end
 end
 
 return M
