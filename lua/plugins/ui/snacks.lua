@@ -1,3 +1,4 @@
+-- Inspirational quotes for the dashboard
 local quotes = {
 	'"The only way to do great work is to love what you do" - Steve Jobs',
 	'"Life is what happens when you\'re busy making other plans" - John Lennon',
@@ -7,22 +8,22 @@ local quotes = {
 	'"Code is like humor. When you have to explain it, it\'s bad." - Cory House',
 }
 
--- Function to get a random quote
+-- Helper functions
 local function get_random_quote()
-	math.randomseed(os.time()) -- Seed the random number generator
+	math.randomseed(os.time())
 	return quotes[math.random(#quotes)]
 end
 
--- Function to get the current day header
+-- ASCII art headers for each day of the week
 local function get_header()
 	local days = {
 		[0] = [[
-     ██████╗ ██╗   ██╗███╗   ██╗██████╗  █████╗ ██╗   ██╗
-    ██╔════╝ ██║   ██║████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
-    ███████╗ ██║   ██║██╔██╗ ██║██║  ██║███████║ ╚████╔╝ 
-    ╚════██║ ██║   ██║██║╚██╗██║██║  ██║██╔══██║  ╚██╔╝  
-    ███████║ ╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║   
-    ╚══════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ]],
+    ██████╗ ██╗   ██╗███╗   ██╗██████╗  █████╗ ██╗   ██╗
+    ██╔══██╗██║   ██║████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
+    ██████╔╝██║   ██║██╔██╗ ██║██║  ██║███████║ ╚████╔╝ 
+    ██╔═══╝ ██║   ██║██║╚██╗██║██║  ██║██╔══██║  ╚██╔╝  
+    ██║     ╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║   
+    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ]],
 		[1] = [[
     ███╗   ███╗ ██████╗ ███╗   ██╗██████╗  █████╗ ██╗   ██╗
     ████╗ ████║██╔═══██╗████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
@@ -70,68 +71,61 @@ local function get_header()
 	return days[current_day]
 end
 
+-- Common keybindings for dashboard
+local default_keys = {
+	{ icon = "🔍 ", key = "f", desc = "Find File", action = ":lua require('snacks').dashboard.pick('files')" },
+	{ icon = "📄 ", key = "n", desc = "New File", action = ":ene | startinsert" },
+	{ icon = "🔎 ", key = "g", desc = "Find Text", action = ":lua require('snacks').dashboard.pick('live_grep')" },
+	{ icon = "📂 ", key = "r", desc = "Recent Files", action = ":lua require('snacks').dashboard.pick('oldfiles')" },
+	{ icon = "⚙️  ", key = "c", desc = "Config", action = ":lua require('snacks').dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+	{ icon = "💾 ", key = "s", desc = "Restore Session", section = "session" },
+	{ icon = "📦 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+	{ icon = "👋 ", key = "q", desc = "Quit", action = ":qa" },
+}
+
+-- Border characters for sections
+local border = {
+	tl = "╭", tr = "╮", bl = "╰", br = "╯",
+	h = "─", v = "│",
+}
+
+-- Plugin configuration
 return {
 	"folke/snacks.nvim",
 	opts = {
 		dashboard = {
-			width = 80, -- Increased overall width
-			pane_gap = 8, -- Increased gap between panes
+			width = 80,
+			pane_gap = 8,
 			sections = {
+				-- Header section
 				{
 					section = "header",
-					opts = {
-						header = get_header(),
-					},
-					padding = { 2, 3 }, -- More padding around header
+					opts = { header = get_header() },
+					padding = { 2, 3 },
 				},
+				
+				-- Left pane sections
+				{
+					section = "keys",
+					items = default_keys,
+				},
+				{
+					section = "startup",
+					text = {
+						{ "💭 ", hl = "Special" },
+						{ get_random_quote(), hl = "Comment", align = "center" },
+					},
+					padding = { 2, 2 },
+					indent = 4,
+				},
+				
+				-- Right pane sections
 				{
 					pane = 2,
 					section = "terminal",
 					cmd = "",
-					height = 8, -- Increased height
+					height = 8,
 					padding = 2,
-				},
-				{
-					section = "keys",
-					gap = 2,
-					padding = { 2, 2 },
-					indent = 2,
-					items = {
-						{
-							icon = "🔍 ",
-							key = "f",
-							desc = "Find File",
-							action = ":lua require('snacks').dashboard.pick('files')",
-						},
-						{ icon = "📄 ", key = "n", desc = "New File", action = ":ene | startinsert" },
-						{
-							icon = "🔎 ",
-							key = "g",
-							desc = "Find Text",
-							action = ":lua require('snacks').dashboard.pick('live_grep')",
-						},
-						{
-							icon = "📂 ",
-							key = "r",
-							desc = "Recent Files",
-							action = ":lua require('snacks').dashboard.pick('oldfiles')",
-						},
-						{
-							icon = "⚙️  ",
-							key = "c",
-							desc = "Config",
-							action = ":lua require('snacks').dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-						},
-						{ icon = "💾 ", key = "s", desc = "Restore Session", section = "session" },
-						{
-							icon = "📦 ",
-							key = "L",
-							desc = "Lazy",
-							action = ":Lazy",
-							enabled = package.loaded.lazy ~= nil,
-						},
-						{ icon = "👋 ", key = "q", desc = "Quit", action = ":qa" },
-					},
 				},
 				{
 					pane = 2,
@@ -159,23 +153,14 @@ return {
 					enabled = function()
 						return require("snacks").git.get_root() ~= nil
 					end,
-					cmd = "git status --short --branch --renames",
-					height = 8,
+					cmd = string.format(
+						"echo '%s%s%s' && git status --short --branch --renames && echo '%s%s%s'",
+						border.tl, string.rep(border.h, 78), border.tr,
+						border.bl, string.rep(border.h, 78), border.br
+					),
+					height = 10,
 					padding = { 2, 2 },
 					ttl = 5 * 60,
-					indent = 4,
-				},
-				{
-					section = "startup",
-					padding = { 2, 2 },
-					icon = "⚡ ",
-				},
-				{
-					text = {
-						{ "💭 ", hl = "Special" },
-						{ get_random_quote(), hl = "Comment", align = "center" },
-					},
-					padding = { 2, 2 },
 					indent = 4,
 				},
 				{
@@ -188,42 +173,7 @@ return {
 			},
 			preset = {
 				header = get_header(),
-				keys = {
-					{
-						icon = "🔍 ",
-						key = "f",
-						desc = "Find File",
-						action = ":lua require('snacks').dashboard.pick('files')",
-					},
-					{ icon = "📄 ", key = "n", desc = "New File", action = ":ene | startinsert" },
-					{
-						icon = "🔎 ",
-						key = "g",
-						desc = "Find Text",
-						action = ":lua require('snacks').dashboard.pick('live_grep')",
-					},
-					{
-						icon = "📂 ",
-						key = "r",
-						desc = "Recent Files",
-						action = ":lua require('snacks').dashboard.pick('oldfiles')",
-					},
-					{
-						icon = "⚙️  ",
-						key = "c",
-						desc = "Config",
-						action = ":lua require('snacks').dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-					},
-					{ icon = "💾 ", key = "s", desc = "Restore Session", section = "session" },
-					{
-						icon = "📦 ",
-						key = "L",
-						desc = "Lazy",
-						action = ":Lazy",
-						enabled = package.loaded.lazy ~= nil,
-					},
-					{ icon = "👋 ", key = "q", desc = "Quit", action = ":qa" },
-				},
+				keys = default_keys,
 			},
 		},
 	},
