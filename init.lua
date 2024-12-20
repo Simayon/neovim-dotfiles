@@ -20,28 +20,9 @@ require("configs.keymaps")
 require("configs.options")
 
 -- [[ Configure and install plugins ]]
---
+
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
-
-	-- Use `opts = {}` to force a plugin to be loaded.
-	--
-	-- Here is a more advanced example where we pass configuration
-	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-	--    require('gitsigns').setup({ ... })
-	--
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
-		"lewis6991/gitsigns.nvim",
-		opts = {
-			signs = {
-				add = { text = "+" },
-				change = { text = "~" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-			},
-		},
-	},
 
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--

@@ -10,6 +10,7 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 ### 🌟 Features & Highlights
 
 - **🌈 Colorscheme & Themes** – Tailored color schemes to keep your workspace inspiring and easy on the eyes.
+- **🌟 Custom Dashboard** – Beautiful startup screen with dynamic ASCII art headers and matrix animation.
 - **🔑 Custom Keymaps** – Speed up your workflow with intuitive, customized keybindings. See [keybindings reference](./keybindings_reference.md) for details.
 - **📂 File Navigation** – Effortlessly explore and manage files with tree views and Neo-tree.
 - **📊 Productivity Plugins** – Boost efficiency with tools like `WakaTime`, `Lualine`, and `Dashboard`.
@@ -27,6 +28,7 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 | **ToggleTerm**     | In-editor terminal management           |
 | **Diffview**       | Git diff view for seamless version control |
 | **Obsidian**       | Markdown and note management            |
+| **Snacks**         | Beautiful dashboard with dynamic headers |
 
 With this setup, I strive to create a **workspace as dynamic and adaptable as the coder** – because every line deserves a development environment that keeps up.
 
