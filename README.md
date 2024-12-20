@@ -1,21 +1,50 @@
-# ⚙️ Neovim Configuration
-> "A well-crafted toolset is like a finely tuned instrument – powerful, responsive, and a joy to use."
+# ⚡ Neovim Configuration
 
 <div align="center">
- <img src="./doc/neovim-ai.jpg" alt="Neovim Configuration Banner" />
+
+![Neovim](https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white)
+[![Lua](https://img.shields.io/badge/Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white)](http://www.lua.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+<img src="./static/animation.gif" alt="Neovim Configuration Demo" width="600px" />
+
+> "A well-crafted toolset is like a finely tuned instrument – powerful, responsive, and a joy to use."
+
 </div>
 
-This **Neovim configuration** isn't just code; it's a curated experience. Designed with modularity and precision, it encompasses everything from color schemes to advanced plugins, making it a versatile hub for seamless development.
+## ✨ Features
 
-### 🌟 Features & Highlights
+<details open>
+<summary><b>🎯 Key Highlights</b></summary>
 
-- **🌈 Colorscheme & Themes** – Tailored color schemes to keep your workspace inspiring and easy on the eyes.
-- **🌟 Custom Dashboard** – Beautiful startup screen with dynamic ASCII art headers and matrix animation.
-- **🔑 Custom Keymaps** – Speed up your workflow with intuitive, customized keybindings. See [keybindings reference](./keybindings_reference.md) for details.
-- **📂 File Navigation** – Effortlessly explore and manage files with tree views and Neo-tree.
-- **📊 Productivity Plugins** – Boost efficiency with tools like `WakaTime`, `Lualine`, and `Dashboard`.
+- 🎨 **Beautiful UI**
+  - Custom dashboard with ASCII art and animations
+  - Modern and minimal status line
+  - Smooth scrolling and animations
+  
+- ⚡ **Enhanced Editing**
+  - Advanced syntax highlighting with Treesitter
+  - Smart autocompletion
+  - AI-powered coding assistance
+  
+- 🔍 **Powerful Search**
+  - Fuzzy finding for files and text
+  - Live grep with preview
+  - Symbol navigation
+  
+- 🛠️ **Developer Tools**
+  - Git integration with diff view
+  - LSP support with diagnostics
+  - Debugging capabilities
+  
+- ⌨️ **Efficient Workflow**
+  - Intuitive key bindings
+  - Quick file navigation
+  - Smart splits management
 
-### 📁 Directory Structure
+</details>
+
+## 📁 Directory Structure
 
 <details>
 <summary>Click to expand</summary>
@@ -57,63 +86,66 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 
 </details>
 
-### 🔌 Core Plugins
+## 🔌 Core Plugins
 
-| Category | Plugin | Purpose |
-|----------|--------|---------|
-| **UI** |
-| | **Neo-tree** | Modern file tree explorer |
-| | **Lualine** | Minimalist status line |
-| | **Notify** | Notification system |
-| | **Snacks** | Beautiful dashboard |
-| **Editor** |
-| | **Mini.nvim** | Collection of essential tools (surround, ai) |
-| | **Treesitter** | Advanced syntax highlighting |
-| | **Autopairs** | Automatic bracket pairing |
-| **Tools** |
-| | **Which-key** | Keybinding helper |
-| | **Telescope** | Fuzzy finder |
-| | **Harpoon** | File marking and navigation |
-| | **OSCYank** | System clipboard integration |
-| **AI** |
-| | **Copilot** | GitHub Copilot integration |
-| | **Avante** | AI code assistance |
-| **Git** |
-| | **Gitsigns** | Git integration in editor |
-| | **Diffview** | Git diff viewer |
+<details>
+<summary><b>View Plugin List</b></summary>
 
----
+| Category | Plugin | Description |
+|----------|--------|-------------|
+| **🎨 UI** |
+| | [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) | Modern file explorer |
+| | [Lualine](https://github.com/nvim-lualine/lualine.nvim) | Fast statusline |
+| | [Notify](https://github.com/rcarriga/nvim-notify) | Notification manager |
+| | [Snacks](https://github.com/simrat39/snacks.nvim) | Beautiful dashboard |
+| **📝 Editor** |
+| | [Mini.nvim](https://github.com/echasnovski/mini.nvim) | Essential editing tools |
+| | [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting |
+| | [Autopairs](https://github.com/windwp/nvim-autopairs) | Bracket pairing |
+| **🛠️ Tools** |
+| | [Which-key](https://github.com/folke/which-key.nvim) | Command helper |
+| | [Telescope](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder |
+| | [Harpoon](https://github.com/ThePrimeagen/harpoon) | File navigation |
+| | [OSCYank](https://github.com/ojroques/vim-oscyank) | System clipboard |
+| **🤖 AI** |
+| | [Copilot](https://github.com/github/copilot.vim) | GitHub Copilot |
+| | [Avante](https://github.com/simrat39/avante.nvim) | AI assistance |
+| **📦 Git** |
+| | [Gitsigns](https://github.com/lewis6991/gitsigns.nvim) | Git integration |
+| | [Diffview](https://github.com/sindrets/diffview.nvim) | Git diff viewer |
 
-### 🔌 Core Plugins
+</details>
 
-| Plugin             | Purpose                                  |
-|--------------------|------------------------------------------|
-| **WakaTime**       | Track coding stats and boost productivity|
-| **Neo-tree**       | Modern file tree explorer               |
-| **Lualine**        | Minimalist status line                   |
-| **Treesitter**     | Syntax highlighting and more            |
-| **ToggleTerm**     | In-editor terminal management           |
-| **Diffview**       | Git diff view for seamless version control |
-| **Obsidian**       | Markdown and note management            |
-| **Snacks**         | Beautiful dashboard with dynamic headers |
+## ⚡ Quick Start
 
-With this setup, I strive to create a **workspace as dynamic and adaptable as the coder** – because every line deserves a development environment that keeps up.
+### Prerequisites
 
-## Dependencies
+> ⚠️ **Important Note for Ubuntu Users**: The default Neovim package in Ubuntu's standard repositories is outdated. This configuration requires Neovim >= 0.9.0 for full functionality, as many plugins use newer APIs. You **must** install Neovim from the unstable PPA.
 
-> ⚠️ **Important Note for Ubuntu Users**: The default Neovim package in Ubuntu's standard repositories is often outdated. This configuration requires Neovim >= 0.9.0 for full functionality, as many plugins use newer APIs. You **must** install Neovim from the unstable PPA to get the latest version.
+<details>
+<summary><b>View Dependencies</b></summary>
 
-Required dependencies:
+Required:
 - neovim >= 0.9.0 (required for plugin compatibility)
 - git
 - ripgrep (for telescope)
 - fd-find (for telescope)
-- cmatrix
 - nodejs >= 16 (for copilot)
 - python3
 - markdownlint-cli (for markdown linting)
 
-Install dependencies on Ubuntu/Debian:
+Optional:
+- cmatrix (for animations)
+- nodejs (for LSP features)
+- cargo (for certain tools)
+
+</details>
+
+### Installation
+
+<details>
+<summary><b>Ubuntu/Debian</b></summary>
+
 ```bash
 # Add neovim unstable PPA (REQUIRED for Ubuntu)
 sudo add-apt-repository ppa:neovim-ppa/unstable
@@ -129,27 +161,39 @@ sudo apt install neovim git ripgrep fd-find cmatrix python3 python3-pip nodejs n
 npm install -g markdownlint-cli
 ```
 
-For other Linux distributions, ensure you install Neovim >= 0.9.0 from appropriate sources:
+</details>
+
+<details>
+<summary><b>Other Linux Distributions</b></summary>
+
+Ensure Neovim >= 0.9.0 is installed:
 - Arch Linux: `pacman -S neovim` (latest version in official repos)
 - Fedora: `dnf install neovim` (usually up to date)
-- Manual installation: [Neovim GitHub Releases](https://github.com/neovim/neovim/releases)
+- Manual: [Neovim GitHub Releases](https://github.com/neovim/neovim/releases)
 
-## Roadmap
-Make Neovim COOL
+</details>
 
-## Contributing
-Contributions are always welcome!
-See `contributing.md` for ways to get started.
-Please adhere to this project's `code of conduct`.
+## 🤝 Contributing
 
-## 🚀 About Me
-I am a passionate and dedicated design engineer specializing in Linux kernel development, embedded systems, and driver development.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-## 🔗 Links
-[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://simayonthampi.me)
+## 📝 License
 
-## Acknowledgements
-- [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) - The one thing I recommend for beginners to become a pro in neovim
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+## 🙏 Acknowledgements
+
+- [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) - The perfect starting point for Neovim configuration
+- [LazyVim](https://github.com/LazyVim/LazyVim) - Inspiration for plugin organization
+- [LunarVim](https://github.com/LunarVim/LunarVim) - Ideas for keybindings and UI
+
+---
+
+<div align="center">
+<p>Made with ❤️ by <a href="https://simayonthampi.me">Simayon Thampi</a></p>
+
+[![portfolio](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://simayonthampi.me)
+[![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/simayonthampi)
+[![github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/simayon)
+
+</div>
