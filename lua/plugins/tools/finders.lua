@@ -22,7 +22,7 @@ return {
 						delay = 50,
 						scrollbar = "float",
 						title = true,
-						title_align = "left",
+						title_pos = "left",
 						border = "rounded",
 						scrollchar = "▊",
 						scrolloff = 5,
@@ -39,7 +39,7 @@ return {
 					},
 					-- Stylize the window
 					border = "rounded",
-					hl = {
+					hls = {
 						normal = "Normal",
 						border = "FloatBorder",
 						preview_normal = "Normal",

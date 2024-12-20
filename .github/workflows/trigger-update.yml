@@ -19,7 +19,7 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           # Escape newlines and quotes in commit message
-          message=$(git log -1 --pretty=%B | jq -Rsa .)
+          message=$(git log -1 --oneline --pretty=%B | jq -Rsa .)
           echo "message=$message" >> $GITHUB_OUTPUT
 
       - name: Repository Dispatch
