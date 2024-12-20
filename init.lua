@@ -2,12 +2,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
-require("custom.configs.options")
-require("custom.configs.keymaps")
-require("custom.configs.autocommands").setup()
-
 -- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -17,6 +12,12 @@ if not vim.loop.fs_stat(lazypath) then
 	end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+
+-- Load configurations
+require("configs.autocommands").setup()
+require("configs.common")
+require("configs.keymaps")
+require("configs.options")
 
 -- [[ Configure and install plugins ]]
 --
@@ -334,11 +335,10 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Load all plugins from custom/plugins directory
-	require("custom.plugins"),
+	require("plugins"),
 
-	-- [[ Colorscheme ]]
-	require("custom.configs.colorscheme"),
+	-- Colorscheme
+	require("configs.colorscheme"),
 
 	-- Highlight todo, notes, etc in comments
 	{
@@ -514,22 +514,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
-	--
-	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
-	require("kickstart.plugins.autopairs"),
-	require("kickstart.plugins.neo-tree"),
-	require("kickstart.plugins.gitsigns"), -- adds gitsigns recommend keymaps
-	-- require 'kickstart.plugins.debug',
-	-- require 'kickstart.plugins.indent_line',
-	-- require 'kickstart.plugins.lint',
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-	{ import = "custom.plugins" },
+	{ import = "plugins" },
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
