@@ -1,4 +1,5 @@
 name: Trigger Submodule Update
+
 on:
   push:
     branches: [main]
@@ -7,9 +8,29 @@ jobs:
   trigger-update:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get commit details
+        id: commit
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          git log -1 --pretty=%B >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: Simayon/my-dotfiles
           event-type: neovim-updated
+          client-payload: |
+            {
+              "sha": "${{ steps.commit.outputs.sha }}",
+              "short_sha": "${{ steps.commit.outputs.short_sha }}",
+              "message": "${{ steps.commit.outputs.message }}"
+            }
