@@ -15,6 +15,73 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 - **📂 File Navigation** – Effortlessly explore and manage files with tree views and Neo-tree.
 - **📊 Productivity Plugins** – Boost efficiency with tools like `WakaTime`, `Lualine`, and `Dashboard`.
 
+### 📁 Directory Structure
+
+<details>
+<summary>Click to expand</summary>
+
+```
+.
+├── 📁 lua/                    Main configuration directory
+│   ├── 📁 configs/           Core configuration
+│   │   ├── 🔧 autocommands   Auto commands and events
+│   │   ├── 🎨 colorscheme    Theme and colors
+│   │   ├── 🛠️  common        Shared utilities
+│   │   ├── ⌨️  keymaps       Global key bindings
+│   │   └── ⚙️  options       Neovim settings
+│   │
+│   └── 📁 plugins/           Plugin configurations
+│       ├── 📝 editor/        Text editing enhancements
+│       │   ├── mini          Essential tools (surround, ai)
+│       │   ├── autopairs     Smart bracket pairing
+│       │   └── ...
+│       │
+│       ├── 🛠️ tools/         Productivity tools
+│       │   ├── 🤖 ai/        AI assistants
+│       │   │   ├── avante    AI code assistance
+│       │   │   └── copilot   GitHub Copilot
+│       │   ├── finders       Fuzzy finding
+│       │   ├── which-key     Keybinding helper
+│       │   └── ...
+│       │
+│       └── 🎯 ui/            User interface
+│           ├── lualine       Status line
+│           ├── neo-tree      File explorer
+│           ├── notify        Notifications
+│           └── snacks        Dashboard
+│
+├── 📜 init.lua               Entry point
+├── 🛠️ scripts/              Utility scripts
+└── 🖼️ static/               Assets and images
+```
+
+</details>
+
+### 🔌 Core Plugins
+
+| Category | Plugin | Purpose |
+|----------|--------|---------|
+| **UI** |
+| | **Neo-tree** | Modern file tree explorer |
+| | **Lualine** | Minimalist status line |
+| | **Notify** | Notification system |
+| | **Snacks** | Beautiful dashboard |
+| **Editor** |
+| | **Mini.nvim** | Collection of essential tools (surround, ai) |
+| | **Treesitter** | Advanced syntax highlighting |
+| | **Autopairs** | Automatic bracket pairing |
+| **Tools** |
+| | **Which-key** | Keybinding helper |
+| | **Telescope** | Fuzzy finder |
+| | **Harpoon** | File marking and navigation |
+| | **OSCYank** | System clipboard integration |
+| **AI** |
+| | **Copilot** | GitHub Copilot integration |
+| | **Avante** | AI code assistance |
+| **Git** |
+| | **Gitsigns** | Git integration in editor |
+| | **Diffview** | Git diff viewer |
+
 ---
 
 ### 🔌 Core Plugins
@@ -34,19 +101,38 @@ With this setup, I strive to create a **workspace as dynamic and adaptable as th
 
 ## Dependencies
 
+> ⚠️ **Important Note for Ubuntu Users**: The default Neovim package in Ubuntu's standard repositories is often outdated. This configuration requires Neovim >= 0.9.0 for full functionality, as many plugins use newer APIs. You **must** install Neovim from the unstable PPA to get the latest version.
+
 Required dependencies:
-- neovim
+- neovim >= 0.9.0 (required for plugin compatibility)
+- git
+- ripgrep (for telescope)
+- fd-find (for telescope)
 - cmatrix
+- nodejs >= 16 (for copilot)
+- python3
 - markdownlint-cli (for markdown linting)
 
 Install dependencies on Ubuntu/Debian:
 ```bash
+# Add neovim unstable PPA (REQUIRED for Ubuntu)
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt update
+
+# Verify neovim version after installation
+nvim --version  # Should be >= 0.9.0
+
 # Install system dependencies
-sudo apt install neovim cmatrix
+sudo apt install neovim git ripgrep fd-find cmatrix python3 python3-pip nodejs npm
 
 # Install markdownlint-cli using npm
 npm install -g markdownlint-cli
 ```
+
+For other Linux distributions, ensure you install Neovim >= 0.9.0 from appropriate sources:
+- Arch Linux: `pacman -S neovim` (latest version in official repos)
+- Fedora: `dnf install neovim` (usually up to date)
+- Manual installation: [Neovim GitHub Releases](https://github.com/neovim/neovim/releases)
 
 ## Roadmap
 Make Neovim COOL
