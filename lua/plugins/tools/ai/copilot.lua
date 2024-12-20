@@ -1,7 +1,7 @@
 return {
   'zbirenbaum/copilot.lua',
+  event = "InsertEnter",  -- Only load when entering insert mode
   cmd = "Copilot",
-  event = "InsertEnter",
   config = function()
     require("copilot").setup({
       panel = {

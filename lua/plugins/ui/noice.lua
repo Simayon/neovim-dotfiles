@@ -1,6 +1,10 @@
 return {
   'folke/noice.nvim',
-  event = 'VeryLazy',
+  event = 'VeryLazy',  -- Load after startup
+  dependencies = {
+    'MunifTanjim/nui.nvim',
+    'rcarriga/nvim-notify',
+  },
   opts = {
     -- View Cmdline & Popupmenu together
     views = {

@@ -5,7 +5,7 @@ return {
     'SmiteshP/nvim-navic',
     'MunifTanjim/nui.nvim',
   },
-  lazy = false,
+  event = "LspAttach",  -- Only load when LSP attaches
   keys = { { '<leader>sn', '<CMD>Navbuddy<CR>', desc = '[S]earch [N]avbuddy' } },
   config = function()
     require('nvim-navbuddy').setup {
