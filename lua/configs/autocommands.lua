@@ -15,18 +15,6 @@ local function with_error_handling(callback)
 	end
 end
 
--- Disable inlay hints for markdown files
-M.setup_markdown_hints = function()
-	vim.api.nvim_create_autocmd("FileType", {
-		pattern = "markdown",
-		callback = function()
-			if vim.lsp.inlay_hint then
-				vim.lsp.inlay_hint.enable(0, false)
-			end
-		end,
-	})
-end
-
 ---Setup Neotree autoopen with deferred initialization
 ---@return nil
 M.setup_neotree = function()
@@ -103,7 +91,6 @@ M.setup = function()
 	end
 
 	M.setup_neotree()
-	M.setup_markdown_hints()
 
 	-- Stop profiling if it was started
 	if vim.env.NVIM_PROFILE then

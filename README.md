@@ -32,6 +32,22 @@ This **Neovim configuration** isn't just code; it's a curated experience. Design
 
 With this setup, I strive to create a **workspace as dynamic and adaptable as the coder** – because every line deserves a development environment that keeps up.
 
+## Dependencies
+
+Required dependencies:
+- neovim
+- cmatrix
+- markdownlint-cli (for markdown linting)
+
+Install dependencies on Ubuntu/Debian:
+```bash
+# Install system dependencies
+sudo apt install neovim cmatrix
+
+# Install markdownlint-cli using npm
+npm install -g markdownlint-cli
+```
+
 ## Roadmap
 Make Neovim COOL
 
