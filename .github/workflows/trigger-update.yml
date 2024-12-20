@@ -18,9 +18,9 @@ jobs:
         run: |
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "message<<EOF" >> $GITHUB_OUTPUT
-          git log -1 --pretty=%B >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Escape newlines and quotes in commit message
+          message=$(git log -1 --pretty=%B | jq -Rsa .)
+          echo "message=$message" >> $GITHUB_OUTPUT
 
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
@@ -32,5 +32,5 @@ jobs:
             {
               "sha": "${{ steps.commit.outputs.sha }}",
               "short_sha": "${{ steps.commit.outputs.short_sha }}",
-              "message": "${{ steps.commit.outputs.message }}"
+              "message": ${{ steps.commit.outputs.message }}
             }
