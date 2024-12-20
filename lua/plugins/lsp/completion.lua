@@ -23,8 +23,8 @@ return {
 			-- Additional custom keymaps
 			["<C-d>"] = { "scroll_documentation_down" },
 			["<C-u>"] = { "scroll_documentation_up" },
-			["<C-j>"] = { "select_next", "fallback" },
-			["<C-k>"] = { "select_prev", "fallback" },
+			["<Tab>"] = { "select_next", "fallback" },
+			["<S-Tab>"] = { "select_prev", "fallback" },
 			["<C-l>"] = { "snippet_forward", "fallback" },
 			["<C-h>"] = { "snippet_backward", "fallback" },
 			["<C-space>"] = { "show", "show_documentation" },

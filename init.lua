@@ -329,64 +329,6 @@ require("lazy").setup({
 		},
 	},
 
-	-- [[ Collection of various small independent plugins/modules ]]
-	{ -- Collection of various small independent plugins/modules
-		"echasnovski/mini.nvim",
-		event = "VeryLazy", -- Load after other important plugins
-		config = function()
-			-- Better Around/Inside textobjects
-			--
-			-- Examples:
-			--  - va)  - [V]isually select [A]round [)]paren
-			--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-			--  - ci'  - [C]hange [I]nside [']quote
-			require("mini.ai").setup({ n_lines = 500 })
-			-- Add/delete/replace surroundings (brackets, quotes, etc.)
-			require("mini.surround").setup({
-				-- No need to copy this inside `setup()`. Will be used automatically.
-				custom_surroundings = nil,
-				highlight_duration = 500,
-				mappings = {
-					add = "sa", -- Add surrounding in Normal and Visual modes
-					delete = "sd", -- Delete surrounding
-					find = "sf", -- Find surrounding (to the right)
-					find_left = "sF", -- Find surrounding (to the left)
-					highlight = "sh", -- Highlight surrounding
-					replace = "sr", -- Replace surrounding
-					update_n_lines = "sn", -- Update `n_lines`
-					suffix_last = "l", -- Suffix to search with "prev" method
-					suffix_next = "n", -- Suffix to search with "next" method
-				},
-				n_lines = 20,
-				respect_selection_type = false,
-				search_method = "cover_or_next",
-				silent = false,
-			})
-			-- Add/delete/replace surroundings (brackets, quotes, etc.)
-			--
-			-- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-			-- - sd'   - [S]urround [D]elete [']quotes
-			-- - sr)'  - [S]urround [R]eplace [)] [']
-
-			-- Simple and easy statusline.
-			--  You could remove this setup call if you don't like it,
-			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
-
-			-- ... and there is more!
-			--  Check out: https://github.com/echasnovski/mini.nvim
-		end,
-	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -431,17 +373,6 @@ require("lazy").setup({
 	},
 
 	-- [[ Additional Utilities ]]
-	{ -- Key binding analyzer
-		"meznaric/key-analyzer.nvim",
-		keys = {
-			{ "<leader>ka", "<cmd>KeyAnalyzer<cr>", desc = "[K]ey [A]nalyzer" },
-		},
-		opts = {
-			-- Automatically calculate optimal key suggestions
-			auto_calculate = true,
-		},
-	},
-
 	{ -- Markdown equation previewer
 		"Thiago4532/mdmath.nvim",
 		ft = { "markdown" }, -- Only load for markdown files
