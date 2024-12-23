@@ -51,7 +51,8 @@ return {
         "zaldih/themery.nvim",
         lazy = false,
         keys = {
-            { "<leader>tc", "<cmd>Themery<cr>", desc = "Toggle Colorscheme" },
+            { "<leader>t", mode = { "n" }, desc = "+theme" },
+            { "<leader>tt", "<cmd>Themery<cr>", desc = "Switch Theme" },
         },
         config = function()
             require("themery").setup({
