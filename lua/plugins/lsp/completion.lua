@@ -1,134 +1,127 @@
 return {
-  "saghen/blink.cmp",
-  enabled = true,
-  dependencies = {
-    {
-      "L3MON4D3/LuaSnip",
-      version = "v2.*",
-      build = "make install_jsregexp",
-      dependencies = {
-        "rafamadriz/friendly-snippets",
-      },
-      config = function()
-        require("luasnip").setup({})
-      end,
-    },
-  },
-  opts = {
-    sources = {
-      default = { "lsp", "path", "snippets", "buffer", "copilot", "luasnip" },
-      providers = {
-        lsp = {
-          name = "lsp",
-          enabled = true,
-          module = "blink.cmp.sources.lsp",
-          kind = "LSP",
-          score_offset = 1000,
-        },
-        luasnip = {
-          name = "luasnip",
-          enabled = true,
-          module = "blink.cmp.sources.luasnip",
-          score_offset = 950,
-        },
-        snippets = {
-          name = "snippets",
-          enabled = true,
-          module = "blink.cmp.sources.snippets",
-          score_offset = 900,
-        },
-        copilot = {
-          name = "copilot",
-          enabled = true,
-          module = "blink-cmp-copilot",
-          kind = "Copilot",
-          score_offset = -100,
-          async = true,
-        },
-      },
-    },
-    appearance = {
-      use_nvim_cmp_as_default = false,
-      nerd_font_variant = "mono",
-    },
-    completion = {
-      menu = {
-        enabled = true,
-        min_width = 25,
-        max_height = 15,
-        border = "rounded",
-        winblend = 0,
-        scrolloff = 3,
-        scrollbar = true,
-        direction_priority = { "s", "n" },
-        draw = {
-          columns = {
-            { "kind_icon" },
-            { "label", "label_description", gap = 1 },
-          },
-          padding = { 1, 1 },
-          gap = 1,
-          treesitter = { "lsp" },
-        },
-      },
-      documentation = {
-        auto_show = true,
-        auto_show_delay_ms = 100,
-        update_delay_ms = 50,
-        treesitter_highlighting = true,
-        window = {
-          min_width = 20,
-          max_width = 80,
-          max_height = 25,
-          border = "rounded",
-          winblend = 0,
-          scrollbar = true,
-        },
-      },
-    },
-    snippets = {
-      expand = function(args)
-        require("luasnip").lsp_expand(args.body)
-      end,
-      active = function()
-        local luasnip = require("luasnip")
-        return luasnip.session and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
-          and not luasnip.session.jump_active
-      end,
-      jump = function(direction)
-        if require("luasnip").jumpable(direction) then
-          require("luasnip").jump(direction)
-        end
-      end,
-    },
-    fuzzy = {
-      use_typo_resistance = true,
-      use_frecency = true,
-      use_proximity = true,
-      max_items = 200,
-      sorts = { "score", "sort_text" },
-    },
-    signature = {
-      enabled = true,
-      window = {
-        border = "rounded",
-        max_width = 100,
-        max_height = 15,
-        winblend = 0,
-        scrollbar = true,
-        treesitter_highlighting = true,
-      },
-    },
-    keymap = {
-      preset = "default",
-      ["<Tab>"] = { "select_next", "fallback" },
-      ["<S-Tab>"] = { "select_prev", "fallback" },
-      ["<C-n>"] = { "select_next", "fallback" },
-      ["<C-p>"] = { "select_prev", "fallback" },
-      ["<C-u>"] = { "scroll_documentation_up" },
-      ["<C-d>"] = { "scroll_documentation_down" },
-      ["<C-Space>"] = { "show", "show_documentation" },
-      ["<C-e>"] = { "hide" },
-    },
-  },
+	"saghen/blink.cmp",
+	enabled = true,
+	dependencies = {
+		{
+			"L3MON4D3/LuaSnip",
+			version = "v2.*",
+			build = "make install_jsregexp",
+			dependencies = {
+				"rafamadriz/friendly-snippets",
+			},
+			config = function()
+				require("luasnip").setup({})
+			end,
+		},
+	},
+	build = "cargo build --release",
+	opts = {
+		sources = {
+			default = { "lsp", "path", "snippets", "buffer", "copilot", "luasnip" },
+			providers = {
+				lsp = {
+					name = "lsp",
+					enabled = true,
+					module = "blink.cmp.sources.lsp",
+					score_offset = 1000,
+				},
+				luasnip = {
+					name = "luasnip",
+					enabled = true,
+					module = "blink.cmp.sources.luasnip",
+					score_offset = 950,
+				},
+				snippets = {
+					name = "snippets",
+					enabled = true,
+					module = "blink.cmp.sources.snippets",
+					score_offset = 900,
+				},
+				copilot = {
+					name = "copilot",
+					enabled = true,
+					module = "blink-cmp-copilot",
+					score_offset = -100,
+					async = true,
+				},
+			},
+		},
+		appearance = {
+			use_nvim_cmp_as_default = false,
+			nerd_font_variant = "mono",
+		},
+		completion = {
+			menu = {
+				enabled = true,
+				min_width = 25,
+				max_height = 15,
+				border = "rounded",
+				winblend = 0,
+				scrolloff = 3,
+				scrollbar = true,
+				direction_priority = { "s", "n" },
+				draw = {
+					columns = {
+						{ "kind_icon" },
+						{ "label", "label_description", gap = 1 },
+					},
+					padding = { 1, 1 },
+					gap = 1,
+					treesitter = { "lsp" },
+				},
+			},
+			documentation = {
+				auto_show = true,
+				auto_show_delay_ms = 100,
+				update_delay_ms = 50,
+				treesitter_highlighting = true,
+				window = {
+					min_width = 20,
+					max_width = 80,
+					max_height = 25,
+					border = "rounded",
+					winblend = 0,
+					scrollbar = true,
+				},
+			},
+		},
+		snippets = {
+			expand = function(args)
+				require("luasnip").lsp_expand(args.body)
+			end,
+			active = function()
+				local luasnip = require("luasnip")
+				return luasnip.session
+					and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
+					and not luasnip.session.jump_active
+			end,
+			jump = function(direction)
+				if require("luasnip").jumpable(direction) then
+					require("luasnip").jump(direction)
+				end
+			end,
+		},
+		signature = {
+			enabled = true,
+			window = {
+				border = "rounded",
+				max_width = 100,
+				max_height = 15,
+				winblend = 0,
+				scrollbar = true,
+				treesitter_highlighting = true,
+			},
+		},
+		keymap = {
+			preset = "default",
+			["<Tab>"] = { "select_next", "fallback" },
+			["<S-Tab>"] = { "select_prev", "fallback" },
+			["<C-n>"] = { "select_next", "fallback" },
+			["<C-p>"] = { "select_prev", "fallback" },
+			["<C-u>"] = { "scroll_documentation_up" },
+			["<C-d>"] = { "scroll_documentation_down" },
+			["<C-Space>"] = { "show", "show_documentation" },
+			["<C-e>"] = { "hide" },
+		},
+	},
 }
