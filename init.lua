@@ -18,6 +18,7 @@ require("configs.autocommands").setup()
 require("configs.common")
 require("configs.keymaps")
 require("configs.options")
+require("configs.performance").setup()
 
 -- [[ Configure and install plugins ]]
 
