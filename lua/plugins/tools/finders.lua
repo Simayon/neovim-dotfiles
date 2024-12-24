@@ -170,9 +170,7 @@ return {
 
 			-- Git operations
 			map("<leader>gc", fzf.git_commits, "[G]it [C]ommits")
-			map("<leader>gb", fzf.git_branches, "[G]it [B]ranches")
 			map("<leader>gs", fzf.git_status, "[G]it [S]tatus")
-			map("<leader>gf", fzf.git_files, "[G]it [F]iles")
 		end,
 	},
 }
