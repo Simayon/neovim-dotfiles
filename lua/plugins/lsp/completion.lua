@@ -1,166 +1,186 @@
 return {
-	"saghen/blink.cmp",
-	enabled = true,
+	"Saghen/blink.cmp",
+	event = "InsertEnter",
+	build = "cargo build --release",
 	dependencies = {
 		{
-			"L3MON4D3/LuaSnip",
-			version = "v2.*",
-			build = "make install_jsregexp",
-			dependencies = {
-				"rafamadriz/friendly-snippets",
-			},
+			"rafamadriz/friendly-snippets",
 			config = function()
-				require("luasnip").setup({})
+				require("luasnip.loaders.from_vscode").lazy_load()
 			end,
 		},
+		"jc-doyle/cmp-pandoc-references",
 		{
-			"giuxtaposition/blink-cmp-copilot",
-		},
-	},
-	build = "cargo build --release",
-	opts = {
-		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot", "luasnip" },
-			providers = {
-				lsp = {
-					name = "lsp",
-					enabled = true,
-					module = "blink.cmp.sources.lsp",
-					score_offset = 1000,
+			"L3MON4D3/LuaSnip",
+			dependencies = {
+				{
+					"iurimateus/luasnip-latex-snippets.nvim",
+					ft = { "tex", "bib" },
 				},
-				luasnip = {
-					name = "luasnip",
-					enabled = true,
-					module = "blink.cmp.sources.luasnip",
-					score_offset = 950,
-				},
-				snippets = {
-					name = "snippets",
-					enabled = true,
-					module = "blink.cmp.sources.snippets",
-					score_offset = 900,
-				},
-				copilot = {
-					name = "copilot",
-					module = "blink-cmp-copilot",
-					score_offset = 100,
-					async = true,
-					transform_items = function(_, items)
-						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-						local kind_idx = #CompletionItemKind + 1
-						CompletionItemKind[kind_idx] = "Copilot"
-						for _, item in ipairs(items) do
-							item.kind = kind_idx
+			},
+			config = function()
+				local ls = require("luasnip")
+				local ls_types = require("luasnip.util.types")
+
+				ls.setup({
+					keep_roots = true,
+					link_roots = true,
+					exit_roots = false,
+					link_children = true,
+					region_check_events = "CursorMoved,CursorMovedI",
+					delete_check_events = "TextChanged,TextChangedI",
+					enable_autosnippets = true,
+					store_selection_keys = "<Tab>",
+					ext_opts = {
+						[ls_types.insertNode] = {
+							unvisited = {
+								virt_text_pos = "inline",
+							},
+						},
+						[ls_types.exitNode] = {
+							unvisited = {
+								virt_text_pos = "inline",
+							},
+						},
+					},
+				})
+
+				-- Unlink current snippet on leaving insert/selection mode
+				-- https://github.com/L3MON4D3/LuaSnip/issues/258#issuecomment-1011938524
+				vim.api.nvim_create_autocmd("ModeChanged", {
+					desc = "Unlink current snippet on leaving insert/selection mode.",
+					group = vim.api.nvim_create_augroup("LuaSnipModeChanged", {}),
+					callback = function(info)
+						local mode = vim.v.event.new_mode
+						local omode = vim.v.event.old_mode
+						if
+							(omode == "s" and mode == "n" or omode == "i")
+							and ls.session.current_nodes[info.buf]
+							and not ls.session.jump_active
+						then
+							ls.unlink_current()
 						end
-						return items
 					end,
-				},
-			},
+				})
+
+				---Load snippets for a given filetype
+				---@param ft string
+				---@return nil
+				local function load_snippets(ft)
+					local ok, snip_groups = pcall(require, "snippets." .. ft)
+					if ok and type(snip_groups) == "table" then
+						for _, snip_group in pairs(snip_groups) do
+							ls.add_snippets(ft, snip_group.snip or snip_group, snip_group.opts or {})
+						end
+					end
+				end
+
+				-- Lazy-load snippets based on filetype
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					load_snippets(vim.bo[buf].ft)
+				end
+				vim.api.nvim_create_autocmd("FileType", {
+					group = vim.api.nvim_create_augroup("LuaSnipLazyLoadSnippets", {}),
+					desc = "Lazy load snippets for different filetypes.",
+					callback = function(info)
+						load_snippets(vim.bo[info.buf].ft)
+					end,
+				})
+			end,
 		},
+		{ "saghen/blink.compat", version = "*", opts = { impersonate_nvim_cmp = true } },
+		"mikavilpas/blink-ripgrep.nvim",
+	},
+	---@module 'blink.cmp'
+	---@type blink.cmp.Config
+	opts = {
+		keymap = { preset = "super-tab" },
 		appearance = {
-			use_nvim_cmp_as_default = false,
+			use_nvim_cmp_as_default = true,
 			nerd_font_variant = "mono",
-			kind_icons = {
-				Copilot = "",
-				Text = '󰉿',
-				Method = '󰊕',
-				Function = '󰊕',
-				Constructor = '󰒓',
-				Field = '󰜢',
-				Variable = '󰆦',
-				Property = '󰖷',
-				Class = '󱡠',
-				Interface = '󱡠',
-				Struct = '󱡠',
-				Module = '󰅩',
-				Unit = '󰪚',
-				Value = '󰦨',
-				Enum = '󰦨',
-				EnumMember = '󰦨',
-				Keyword = '󰻾',
-				Constant = '󰏿',
-				Snippet = '󱄽',
-				Color = '󰏘',
-				File = '󰈔',
-				Reference = '󰬲',
-				Folder = '󰉋',
-				Event = '󱐋',
-				Operator = '󰪚',
-				TypeParameter = '󰬛',
-			},
+		},
+		snippets = {
+			expand = function(snippet)
+				require("luasnip").lsp_expand(snippet)
+			end,
+			active = function(filter)
+				if filter and filter.direction then
+					return require("luasnip").jumpable(filter.direction)
+				end
+				return require("luasnip").in_snippet()
+			end,
+			jump = function(direction)
+				require("luasnip").jump(direction)
+			end,
 		},
 		completion = {
+			documentation = { auto_show = true },
+			ghost_text = { enabled = false },
 			menu = {
-				enabled = true,
-				min_width = 25,
-				max_height = 15,
-				border = "rounded",
-				winblend = 0,
-				scrolloff = 3,
-				scrollbar = true,
-				direction_priority = { "s", "n" },
 				draw = {
 					columns = {
 						{ "kind_icon" },
-						{ "label", "label_description", gap = 1 },
+						{ "label", "label_description", gap = 1, "kind" },
 					},
-					padding = { 1, 1 },
-					gap = 1,
-					treesitter = { "lsp" },
+					components = {
+						kind_icon = {
+							text = function(ctx)
+								return " " .. ctx.kind_icon .. ctx.icon_gap .. " "
+							end,
+						},
+						kind = {
+							text = function(ctx)
+								return "(" .. ctx.kind .. ")"
+							end,
+							highlight = function(ctx)
+								return require("blink.cmp.completion.windows.render.tailwind").get_hl(ctx)
+									or "BlinkCmpCustomType"
+							end,
+						},
+					},
 				},
 			},
-			documentation = {
-				auto_show = true,
-				auto_show_delay_ms = 100,
-				update_delay_ms = 50,
-				treesitter_highlighting = true,
-				window = {
-					min_width = 20,
-					max_width = 80,
-					max_height = 25,
-					border = "rounded",
-					winblend = 0,
-					scrollbar = true,
+		},
+		sources = {
+			default = { "lsp", "path", "snippets", "buffer", "luasnip", "ripgrep", "supermaven" },
+			per_filetype = {
+				markdown = {
+					"lsp",
+					"path",
+					"snippets",
+					"buffer",
+					"luasnip",
+					"ripgrep",
+					"supermaven",
+					"pandoc_references",
+				},
+				tex = { "lsp", "path", "snippets", "buffer", "luasnip", "ripgrep", "supermaven", "pandoc_references" },
+			},
+			providers = {
+				ripgrep = {
+					module = "blink-ripgrep",
+					name = "Ripgrep",
+					score_offset = -4,
+					opts = {
+						prefix_min_len = 3,
+						context_size = 5,
+						max_filesize = "1G",
+					},
+				},
+				pandoc_references = {
+					name = "pandoc_references",
+					module = "blink.compat.source",
+					score_offset = -1,
+				},
+				supermaven = {
+					name = "supermaven",
+					module = "blink.compat.source",
+					score_offset = 100,
+					async = true,
 				},
 			},
 		},
-		snippets = {
-			expand = function(args)
-				require("luasnip").lsp_expand(args.body)
-			end,
-			active = function()
-				local luasnip = require("luasnip")
-				return luasnip.session
-					and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
-					and not luasnip.session.jump_active
-			end,
-			jump = function(direction)
-				if require("luasnip").jumpable(direction) then
-					require("luasnip").jump(direction)
-				end
-			end,
-		},
-		signature = {
-			enabled = true,
-			window = {
-				border = "rounded",
-				max_width = 100,
-				max_height = 15,
-				winblend = 0,
-				scrollbar = true,
-				treesitter_highlighting = true,
-			},
-		},
-		keymap = {
-			preset = "default",
-			["<Tab>"] = { "select_next", "fallback" },
-			["<S-Tab>"] = { "select_prev", "fallback" },
-			["<C-n>"] = { "select_next", "fallback" },
-			["<C-p>"] = { "select_prev", "fallback" },
-			["<C-u>"] = { "scroll_documentation_up" },
-			["<C-d>"] = { "scroll_documentation_down" },
-			["<C-Space>"] = { "show", "show_documentation" },
-			["<C-e>"] = { "hide" },
-		},
+		signature = { enabled = true },
 	},
+	opts_extend = { "sources.default" },
 }

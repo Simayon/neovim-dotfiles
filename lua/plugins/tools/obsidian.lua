@@ -14,6 +14,7 @@ return {
   dependencies = {
     -- Required.
     'nvim-lua/plenary.nvim',
+    'hrsh7th/nvim-cmp',
 
     -- see below for full list of optional dependencies 👇
   },
