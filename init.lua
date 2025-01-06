@@ -283,7 +283,6 @@ require("lazy").setup({
 	require("plugins"),
 
 	-- Colorscheme
-	require("configs.colorscheme"),
 
 	-- Highlight todo, notes, etc in comments
 	{
