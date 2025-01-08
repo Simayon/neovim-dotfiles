@@ -12,7 +12,7 @@ return {
 		hint = true,
 		notification = true,
 		allow_different_key = true,
-		enabled = true,
+		enabled = false,
 		restriction_mode = "block", -- Block repeated keys instead of just hinting
 		disabled_keys = {
 			["<Up>"] = { "" }, -- Disable in all modes
@@ -50,7 +50,7 @@ return {
 		require("hardtime").setup(opts)
 
 		-- Enable hardtime on startup
-		vim.cmd("Hardtime enable")
+		-- vim.cmd("Hardtime enable")
 
 		-- Add a notification to confirm it's enabled
 		vim.notify("Hardtime is enabled!", vim.log.levels.INFO, {

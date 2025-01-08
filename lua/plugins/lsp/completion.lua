@@ -114,7 +114,7 @@ return {
 			end,
 		},
 		completion = {
-			documentation = { auto_show = true },
+			documentation = { auto_show = false },
 			ghost_text = { enabled = false },
 			menu = {
 				draw = {
