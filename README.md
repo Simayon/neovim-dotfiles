@@ -128,7 +128,8 @@
 Required:
 - neovim >= 0.9.0 (required for plugin compatibility)
 - git
-- ripgrep (for telescope)
+- ripgrep (for file searching with fzf-lua and telescope)
+- fzf (for fuzzy finding)
 - fd-find (for telescope)
 - nodejs >= 16 (for copilot)
 - python3
@@ -155,7 +156,7 @@ sudo apt update
 nvim --version  # Should be >= 0.9.0
 
 # Install system dependencies
-sudo apt install neovim git ripgrep fd-find cmatrix python3 python3-pip nodejs npm
+sudo apt install neovim git ripgrep fzf fd-find cmatrix python3 python3-pip nodejs npm
 
 # Install markdownlint-cli using npm
 npm install -g markdownlint-cli
