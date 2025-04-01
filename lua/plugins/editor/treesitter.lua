@@ -14,7 +14,7 @@ return {
                 -- List of parsers to install
                 ensure_installed = {
                     "bash", "c", "cpp", "go", "lua", "python", "rust",
-                    "typescript", "javascript", "vim", "vimdoc",
+                    "vim", "vimdoc",
                 },
                 
                 -- Enable syntax highlighting
