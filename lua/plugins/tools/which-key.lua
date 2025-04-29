@@ -6,7 +6,15 @@ return {
 
 		-- Document existing key chains
 		require("which-key").add({
-			{ "<leader>c", group = "[C]ode", mode = { "n" } },
+			{ "<leader>c", group = "[C]scope", mode = { "n" } },
+			{ "<leader>cs", group = "[C]scope", mode = { "n" } },
+			{ "<leader>cS", desc = "[C]scope: Find Symbol", mode = { "n" } },
+			{ "<leader>cg", desc = "[C]scope: Find Global Def", mode = { "n" } },
+			{ "<leader>cc", desc = "[C]scope: Find Calls", mode = { "n" } },
+			{ "<leader>ct", desc = "[C]scope: Find Text String", mode = { "n" } },
+			{ "<leader>ce", desc = "[C]scope: Find Egrep Pattern", mode = { "n" } },
+			{ "<leader>cf", desc = "[C]scope: Find File", mode = { "n" } },
+			{ "<leader>ci", desc = "[C]scope: Find #include", mode = { "n" } },
 			{ "<leader>cp", group = "[C]ode [P]aste", mode = { "n" } },
 			{ "<leader>d", group = "[D]ocument/[D]imming", mode = { "n", "v" } },
 			{ "<leader>dd", desc = "Toggle [D]imming", mode = { "n" } },
