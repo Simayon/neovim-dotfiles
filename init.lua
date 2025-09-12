@@ -21,6 +21,14 @@ require("configs.options")
 require("configs.performance").setup()
 
 -- [[ Configure and install plugins ]]
+--
+require("configs.grepapp-search").setup({
+	keymaps = {
+		search_word = "<leader>gw", -- Search word under cursor
+		search_visual = "<leader>gv", -- Search visual selection
+		search_input = "<leader>gs", -- Search custom input
+	},
+})
 
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
