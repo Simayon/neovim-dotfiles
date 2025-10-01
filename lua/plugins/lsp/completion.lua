@@ -16,7 +16,9 @@ return {
 		---@type blink.cmp.Config
 		opts = {
 			fuzzy = {
-				use_frecency = false,
+				freceny = {
+					enabled = false,
+				},
 			},
 			completion = {
 				accept = {
