@@ -50,7 +50,7 @@ return {
 		name = "onedark",
 		priority = 1000,
 		config = function()
-			require("onedark").setup()
+			require("onedark").setup({})
 			vim.cmd.colorscheme("onedark")
 		end,
 	},

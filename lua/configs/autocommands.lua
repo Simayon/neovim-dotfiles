@@ -39,7 +39,9 @@ M.setup_neotree = function()
 	local function safe_open_neotree()
 		if should_open_neotree() then
 			vim.schedule(function()
-				pcall(vim.cmd, "Neotree show left")
+				pcall(function()
+					vim.cmd("Neotree show left")
+				end)
 				vim.g.neotree_opened = true
 			end)
 		end
