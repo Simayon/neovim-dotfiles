@@ -16,6 +16,10 @@ return {
 		current_line_blame_opts = {
 			delay = 300,
 		},
+		-- Enable inline diff view
+		diff_opts = {
+			internal = true,
+		},
 		on_attach = function(bufnr)
 			local gitsigns = require("gitsigns")
 
@@ -90,10 +94,10 @@ return {
 			-- Preview and diff: View changes without leaving the buffer
 			-- ============================================================================
 
-			-- Preview hunk changes inline
+			-- Preview hunk changes in floating window
 			map("n", "<leader>gp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
 
-			-- Preview hunk changes inline (alternative binding)
+			-- Preview hunk changes inline (stays in buffer)
 			map("n", "<leader>gh", gitsigns.preview_hunk_inline, { desc = "git preview [h]unk inline" })
 
 			-- Open diff view comparing working tree to index
@@ -124,9 +128,6 @@ return {
 			-- ============================================================================
 			-- Toggles: Show/hide various git information
 			-- ============================================================================
-
-			-- Toggle showing deleted lines
-			map("n", "<leader>tD", gitsigns.toggle_deleted, { desc = "[T]oggle git show [D]eleted" })
 
 			-- Toggle word diff highlighting
 			map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "[T]oggle git [w]ord diff" })
