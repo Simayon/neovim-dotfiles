@@ -15,11 +15,7 @@ return {
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
-			fuzzy = {
-				freceny = {
-					enabled = false,
-				},
-			},
+			fuzzy = {},
 			completion = {
 				accept = {
 					auto_brackets = {
